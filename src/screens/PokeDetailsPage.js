@@ -22,9 +22,10 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import placeholder from '../assets/placeholder.png';
 import { PokemonContext } from '../context/PokemonContext';
-import { darkColors, colors, themeColors , lightColors } from '../colors/TypeColors';
+import { darkColors, colors, themeColors, lightColors } from '../colors/TypeColors';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import EvolutionChain from '../components/EvolutionChain';
 
 const PokeDetailsPage = (props) => {
 	const { pokemonName, cGetPokemonName } = useContext(PokemonContext);
@@ -46,7 +47,8 @@ const PokeDetailsPage = (props) => {
 		stats: [],
 		id: '',
 		moves: [],
-		abilities: []
+		abilities: [],
+		baseExperience: ''
 	});
 
 	const [ pokeSpeciesDetails, setPokeSpeciesDetails ] = useState({
@@ -94,7 +96,8 @@ const PokeDetailsPage = (props) => {
 						stats: result.stats,
 						moves: result.moves,
 						id: result.id,
-						abilities: result.abilities
+						abilities: result.abilities,
+						baseExperience: result.base_experience
 					};
 					setPokeDP(result.sprites.other['official-artwork'].front_default);
 					setPokemon(ourPokemon);
@@ -107,7 +110,7 @@ const PokeDetailsPage = (props) => {
 								color: result.color.name,
 								eggGroups: result.egg_groups,
 								evoultionChainURL: result.evolution_chain.url,
-								evolvesFrom: result.evolves_from_species.name,
+								evolvesFrom: result.evolves_from_species ? result.evolves_from_species.name : '',
 								pokemonGenus: result.genera[7].genus,
 								habitat: result.habitat.name,
 								growthRate: result.growth_rate.name,
@@ -143,7 +146,12 @@ const PokeDetailsPage = (props) => {
 			animate={{ scale: 1 }}
 			transition={{ duration: 0.5 }}
 		>
-			<Heading m={3} bgGradient={typeGradient} bgClip={pokemon.types.length == 1 ? '' : 'text'} textColor={typeColor}>
+			<Heading
+				m={3}
+				bgGradient={typeGradient}
+				bgClip={pokemon.types.length == 1 ? '' : 'text'}
+				textColor={typeColor}
+			>
 				{cGetPokemonName().toUpperCase()}
 			</Heading>
 			{isLoading ? (
@@ -152,16 +160,26 @@ const PokeDetailsPage = (props) => {
 				<HStack spacing={4} mb={3} mt={3}>
 					{pokemon.types.map((size) => (
 						<Link>
-							<MotionTag whileHover={{ scale: 1.1 }}  colorScheme={themeColors[size.type.name]} variant="subtle" size="lg" shadow="md">
-								<TagLabel >{size.type.name}</TagLabel>
+							<MotionTag
+								whileHover={{ scale: 1.1 }}
+								colorScheme={themeColors[size.type.name]}
+								variant="subtle"
+								size="lg"
+								shadow="md"
+							>
+								<TagLabel>{size.type.name}</TagLabel>
 							</MotionTag>
 						</Link>
 					))}
 					<Link>
-						<MotionTag whileHover={{ scale: 1.1 }} variant="subtle" size="lg" shadow="md" colorScheme={themeColors[pokemon.types[0].type.name]}>
-							<TagLabel>
-								{pokeSpeciesDetails.pokemonGenus}
-							</TagLabel>
+						<MotionTag
+							whileHover={{ scale: 1.1 }}
+							variant="subtle"
+							size="lg"
+							shadow="md"
+							colorScheme={themeColors[pokemon.types[0].type.name]}
+						>
+							<TagLabel>{pokeSpeciesDetails.pokemonGenus}</TagLabel>
 						</MotionTag>
 					</Link>
 				</HStack>
@@ -245,42 +263,58 @@ const PokeDetailsPage = (props) => {
 				)}
 			</Container>
 			<Box textAlign="center" p={3}>
-			<Text size='sm' fontStyle="italic" m={2} textAlign="center">
-				{pokeSpeciesDetails.flavorText}
-			</Text>
+				<Text size="sm" fontStyle="italic" m={2} textAlign="center">
+					{pokeSpeciesDetails.flavorText}
+				</Text>
 			</Box>
-			<Divider m={2} />
+			{/* <Divider m={2} />
 
 			<Heading>Profile</Heading>
 
-			<Divider m={2} />
+			<Divider m={2} /> */}
 
 			{isLoading ? (
 				<Spinner />
 			) : (
-				<Container display="flex" justifyContent="space-between" mt={2}>
-					<Stat align="center">
-						<StatLabel>Height</StatLabel>
-						<StatNumber>{pokemon.height + ' m'}</StatNumber>
-					</Stat>
-					<Stat align="center">
-						<StatLabel>Weight</StatLabel>
-						<StatNumber>{pokemon.weight + ' kg'}</StatNumber>
-					</Stat>
-					<Stat align="center">
-						<StatLabel>No.</StatLabel>
-						<StatNumber>{'# ' + pokemon.id}</StatNumber>
-					</Stat>
+				<Container>
+					<Container>
+						<SimpleGrid columns={[ 2, 3, 3, 3 ]} display="flex" justifyContent="space-between" mt={2}>
+							<Stat align="center">
+								<StatLabel>No.</StatLabel>
+								<StatNumber>{'# ' + pokemon.id}</StatNumber>
+							</Stat>
+							<Stat align="center">
+								<StatLabel>Height</StatLabel>
+								<StatNumber>{pokemon.height + ' m'}</StatNumber>
+							</Stat>
+							<Stat align="center">
+								<StatLabel>Weight</StatLabel>
+								<StatNumber>{pokemon.weight + ' kg'}</StatNumber>
+							</Stat>
+						</SimpleGrid>
+						<br />
+						<SimpleGrid columns={[ 2, 3, 3, 3 ]} display="flex" justifyContent="space-between" mt={2}>
+							<Stat align="center">
+								<StatLabel>Capture Rate</StatLabel>
+								<StatNumber>{pokeSpeciesDetails.captureRate}</StatNumber>
+							</Stat>
+							<Stat align="center">
+								<StatLabel>Base Happiness</StatLabel>
+								<StatNumber>{pokeSpeciesDetails.baseHappiness}</StatNumber>
+							</Stat>
+							<Stat align="center">
+								<StatLabel>Base Experience</StatLabel>
+								<StatNumber>{pokemon.baseExperience}</StatNumber>
+							</Stat>
+						</SimpleGrid>
+					</Container>
+					<Divider m={3} />
+					<Heading size="md" textAlign="center" fontWeight="none">
+						Evolution Chain
+					</Heading>
+					{/* <EvolutionChain url={pokeSpeciesDetails.evoultionChainURL} /> */}
 				</Container>
 			)}
-
-			<Button
-				onClick={() => {
-					console.log(pokeSpeciesDetails);
-				}}
-			>
-				GET
-			</Button>
 		</MotionFlex>
 	);
 };
