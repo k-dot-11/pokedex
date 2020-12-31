@@ -10,7 +10,8 @@ import {
 	useDisclosure,
 	Text,
 	IconButton,
-	Avatar
+	Avatar,
+	Container
 } from '@chakra-ui/react';
 import { MdClose, MdMenu } from 'react-icons/md';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -43,7 +44,12 @@ function App() {
 		<ChakraProvider theme={theme}>
 			<PokemonContextProvider>
 				<Router>
-					<Flex align="center" h="100vh" flexDirection="column">
+					<Flex
+						display="flex"
+						justify="center"
+						align="center"
+						flexDirection="column"
+					>
 						<Drawer size="xl" isOpen={isOpen} placement="top" onClose={onClose}>
 							<DrawerOverlay>
 								<DrawerContent borderBottomRadius="5vw">
@@ -148,6 +154,7 @@ function App() {
 								<HomePage />
 							</Route>
 						</Switch>
+						
 					</Flex>
 				</Router>
 			</PokemonContextProvider>
