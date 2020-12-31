@@ -100,7 +100,7 @@ const HomePage = () => {
 	const MotionIconButton = motion.custom(IconButton);
 
 	return (
-		<Flex flexDirection="column" alignItems="center" justifyContent="center" flex={12}>
+		<Flex flexDirection="column" alignItems="center" justify='center'  flex={12}>
 			<Image
 				blockSize={[ '200px', '300px', '300px', '300px' ]}
 				src="https://www.pngkey.com/png/full/222-2222875_pokedex-icon.png"
@@ -165,7 +165,7 @@ const HomePage = () => {
 					whileTap={{ scale: 0.8 }}
 				/>
 			</Flex>
-			<Flex flexDirection="column" align="center" position="fixed" bottom={2} >
+			<Flex flexDirection="column" align="center" justifyContent='center' position="absolute"  bottom='0px'>
 				<Flex w={[ '50vw', '40vw', '25vw', '10vw' ]} justify="space-around">
 					<IconButton size="sm" as={FaRedditSquare} />
 					<IconButton size="sm" as={FaGithubSquare} />
