@@ -133,7 +133,7 @@ const PokeDetailsPage = (props) => {
 	);
 
 	return (
-		<MotionFlex
+		<Flex
 			w={[ '100vw', 'xl', 'xl', 'xl' ]}
 			borderColor={typeColor}
 			borderWidth={2}
@@ -142,9 +142,6 @@ const PokeDetailsPage = (props) => {
 			alignItems="center"
 			flex={12}
 			mt={2}
-			initial={{ scale: 0 }}
-			animate={{ scale: 1 }}
-			transition={{ duration: 0.5 }}
 		>
 			<Heading
 				m={3}
@@ -315,7 +312,7 @@ const PokeDetailsPage = (props) => {
 					{/* <EvolutionChain url={pokeSpeciesDetails.evoultionChainURL} /> */}
 				</Container>
 			)}
-		</MotionFlex>
+		</Flex>
 	);
 };
 
