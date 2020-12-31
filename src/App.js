@@ -75,19 +75,7 @@ function App() {
 											</Link>
 										</Flex>
 									</DrawerBody>
-									<DrawerFooter borderTopWidth="1px" flexDirection="column">
-										<Flex w="50vw" justify="space-around" p={2}>
-											<IconButton size="sm" as={FaRedditSquare} />
-											<IconButton size="sm" as={FaGithubSquare} />
-											<IconButton size="sm" as={FaLinkedin} />
-										</Flex>
-										<Text fontSize={12}>
-											An open-source site by Bugdroid2K with help from Pokeapi
-										</Text>
-										<Text fontSize={10}>
-											All content is © Nintendo, Game Freak, and The Pokémon Company.
-										</Text>
-									</DrawerFooter>
+									
 								</DrawerContent>
 							</DrawerOverlay>
 						</Drawer>
