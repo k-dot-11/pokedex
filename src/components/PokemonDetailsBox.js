@@ -39,7 +39,7 @@ const PokemonDetailsBox = (props) => {
 
 	return (
 		<Flex flexDirection="column" align="center">
-			{/* <Heading
+			<Heading
 				color={colors[props.pokemonDetails.types[0].type.name]}
 				bgGradient={typeGradient()}
 				bgClip={props.pokemonDetails.types.length === 1 ? '' : 'text'}
@@ -54,9 +54,9 @@ const PokemonDetailsBox = (props) => {
 						<TagLabel style={{ color: colors[size.type.name] }}>{size.type.name}</TagLabel>
 					</Tag>
 				))}
-			</HStack> */}
+			</HStack>
 			<Container pos="relative" borderColor="teal" display="flex" justifyContent="space-around">
-				{/* <Image fallbackSrc={placeholder} boxSize="125px" src={props.pokeDP} /> */}
+				<Image fallbackSrc={placeholder} boxSize="125px" src={props.pokeDP} />
 
 				<SimpleGrid marginInline={3} columns={2} spacing={5} alignItems="center">
 					<Stat>

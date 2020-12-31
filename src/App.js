@@ -50,7 +50,7 @@ function App() {
 						align="center"
 						flexDirection="column"
 					>
-						<Drawer size="xl" isOpen={isOpen} placement="top" onClose={onClose}>
+						<Drawer size="xl" isOpen={isOpen} placement="top" onClose={onClose} >
 							<DrawerOverlay>
 								<DrawerContent borderBottomRadius="5vw">
 									<DrawerCloseButton />
