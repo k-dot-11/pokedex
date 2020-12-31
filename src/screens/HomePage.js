@@ -165,7 +165,7 @@ const HomePage = () => {
 					whileTap={{ scale: 0.8 }}
 				/>
 			</Flex>
-			<Flex flexDirection="column" align="center" position="fixed" bottom={2} >
+			<Flex flexDirection="column" align="center" position="static" bottom={2} >
 				<Flex w={[ '50vw', '40vw', '25vw', '10vw' ]} justify="space-around">
 					<IconButton size="sm" as={FaRedditSquare} />
 					<IconButton size="sm" as={FaGithubSquare} />
