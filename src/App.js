@@ -49,6 +49,7 @@ function App() {
 						justify="center"
 						align="center"
 						flexDirection="column"
+						h={['','','100vh','100vh']}
 					>
 						<Drawer size="xl" isOpen={isOpen} placement="top" onClose={onClose} >
 							<DrawerOverlay>

@@ -23,9 +23,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import placeholder from '../assets/placeholder.png';
 import { PokemonContext } from '../context/PokemonContext';
 import { darkColors, colors, themeColors, lightColors } from '../colors/TypeColors';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import EvolutionChain from '../components/EvolutionChain';
+import NewEvolutionChain from '../components/NewEvolutionChain';
 
 const PokeDetailsPage = (props) => {
 	const { pokemonName, cGetPokemonName } = useContext(PokemonContext);
@@ -73,7 +73,6 @@ const PokeDetailsPage = (props) => {
 			fetch('https://pokeapi.co/api/v2/pokemon/' + (cGetPokemonName() || pokemonName))
 				.then((res) => {
 					if (res.status === 200) {
-						console.log('Pokemon was found');
 						return res.json();
 					}
 				})
@@ -119,7 +118,6 @@ const PokeDetailsPage = (props) => {
 								flavorText: result.flavor_text_entries[5].flavor_text
 							};
 							setPokeSpeciesDetails(newPokeSpecies);
-							console.log(result);
 						})
 						.then(() => {
 							setLoading(false);
@@ -129,7 +127,7 @@ const PokeDetailsPage = (props) => {
 					console.error('There has been a problem with your fetch operation:', error);
 				});
 		},
-		[ currentColors ]
+		[ currentColors , pokemonName ]
 	);
 
 	return (
@@ -142,6 +140,7 @@ const PokeDetailsPage = (props) => {
 			alignItems="center"
 			flex={12}
 			mt={2}
+			height="100vh"
 		>
 			<Heading
 				m={3}
@@ -306,10 +305,10 @@ const PokeDetailsPage = (props) => {
 						</SimpleGrid>
 					</Container>
 					<Divider m={3} />
-					<Heading size="md" textAlign="center" fontWeight="none">
+					<Heading size="md" textAlign="center" fontWeight="none" mb={4}>
 						Evolution Chain
 					</Heading>
-					{/* <EvolutionChain url={pokeSpeciesDetails.evoultionChainURL} /> */}
+					<NewEvolutionChain url={pokeSpeciesDetails.evoultionChainURL} pokedetails={pokemon} />
 				</Container>
 			)}
 		</Flex>
