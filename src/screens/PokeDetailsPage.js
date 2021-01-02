@@ -59,7 +59,6 @@ const PokeDetailsPage = (props) => {
 		evoultionChainURL: '',
 		evolvesFrom: '',
 		pokemonGenus: '',
-		habitat: '',
 		growthRate: '',
 		generation: '',
 		varieties: [],
@@ -111,7 +110,6 @@ const PokeDetailsPage = (props) => {
 								evoultionChainURL: result.evolution_chain.url,
 								evolvesFrom: result.evolves_from_species ? result.evolves_from_species.name : '',
 								pokemonGenus: result.genera[7].genus,
-								habitat: result.habitat.name,
 								growthRate: result.growth_rate.name,
 								generation: result.generation.name,
 								varieties: result.varieties,
@@ -308,7 +306,7 @@ const PokeDetailsPage = (props) => {
 					<Heading size="md" textAlign="center" fontWeight="none" mb={4}>
 						Evolution Chain
 					</Heading>
-					<NewEvolutionChain url={pokeSpeciesDetails.evoultionChainURL} pokedetails={pokemon} />
+					<NewEvolutionChain url={pokeSpeciesDetails.evoultionChainURL} />
 				</Container>
 			)}
 		</Flex>

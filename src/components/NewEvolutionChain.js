@@ -8,12 +8,31 @@ const NewEvolutionChain = (props) => {
 	const [ isLoading, setIsLoading ] = useState(true);
 	const [ spriteArray, setSpriteArray ] = useState([]);
 	const [ evolArray, setEvolArray ] = useState([]);
-    const { pokemonName, cSetPokemonName } = useContext(PokemonContext);
-    const [evolutionExists , setEvolutionExists] = useState(true)
+	const { pokemonName, cSetPokemonName } = useContext(PokemonContext);
+	const [ evolutionExists, setEvolutionExists ] = useState(true);
 
-	const addToChain = (sprite) => {
-		setSpriteArray((spriteArray) => [ ...spriteArray, sprite ]);
-	};
+	function addToSprite(pokemon, i) {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				fetch('https://pokeapi.co/api/v2/pokemon/' + pokemon).then((res) => res.json()).then((result) => {
+					setSpriteArray((spriteArray) => [
+						...spriteArray,
+						result.sprites.other['official-artwork'].front_default
+					]);
+				});
+				resolve(i + 1);
+			}, 100);
+		});
+	}
+
+	async function generateSpriteArray(evolNames, i) {
+		if (i == evolNames.length) {
+			setIsLoading(false);
+			return;
+		}
+		let x = await addToSprite(evolNames[i], i);
+		generateSpriteArray(evolNames, x);
+	}
 
 	function getSpriteArray() {
 		var evolNames = [];
@@ -32,23 +51,24 @@ const NewEvolutionChain = (props) => {
 				}
 			})
 			.then(() => {
-				evolNames.map((pokemon) => {
-					fetch('https://pokeapi.co/api/v2/pokemon/' + pokemon)
-						.then((res) => {
-							return res.json();
-						})
-						.then((result) => {
-							addToChain(result.sprites.other['official-artwork'].front_default);
-						});
-				});
-				setIsLoading(false);
+				generateSpriteArray(evolNames, 0);
 			});
 	}
 
 	useEffect(() => getSpriteArray(), []);
 
-    if(!evolutionExists) return <Heading size ='sm' textAlign='center' fontWeight='normal'>No evolution chain for this pokemon</Heading>
-	if (isLoading) return <Spinner />;
+	if (!evolutionExists)
+		return (
+			<Heading size="sm" textAlign="center" fontWeight="normal">
+				No evolution chain for this pokemon
+			</Heading>
+		);
+	if (isLoading)
+		return (
+			<Container display="flex" align="center" justifyContent="center">
+				<Spinner />
+			</Container>
+		);
 	return (
 		<Container display="flex" justifyContent="space-around">
 			{spriteArray.map((pokemon, index) => (
@@ -60,15 +80,16 @@ const NewEvolutionChain = (props) => {
 						cSetPokemonName(evolArray[index]);
 					}}
 				>
-					<Link to={{ pathname: '/pokedetails', pokemonDetails: props.pokedetails }}>
+					<Link>
 						<Image
 							alignSelf="center"
 							fallbackSrc={placeholder}
 							boxSize={[ '70px', '75px', '100px', '100px' ]}
 							src={pokemon}
 						/>
-						<Heading size="xs" mt={2}>
-							{evolArray[index].charAt(0).toUpperCase() + evolArray[index].slice(1)}
+						<Heading size="xs" mt={2} textAlign="center">
+							{/* {evolArray[index].charAt(0).toUpperCase() + evolArray[index].slice(1)} */}
+							{evolArray[index]}
 						</Heading>
 					</Link>
 				</Flex>
