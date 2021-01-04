@@ -94,6 +94,7 @@ const HomePage = () => {
 				setIsLoading(false);
 			})
 			.catch((error) => {
+				setIsLoading(false);
 				console.error('There has been a problem with your fetch operation:', error);
 			});
 	};

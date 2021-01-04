@@ -45,11 +45,11 @@ function App() {
 			<PokemonContextProvider>
 				<Router>
 					<Flex
+					overflowX='hidden'
 						display="flex"
 						justify="center"
 						align="center"
 						flexDirection="column"
-						h={['','','100vh','100vh']}
 					>
 						<Drawer size="xl" isOpen={isOpen} placement="top" onClose={onClose} >
 							<DrawerOverlay>

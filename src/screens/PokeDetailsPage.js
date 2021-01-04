@@ -17,15 +17,19 @@ import {
 	Tag,
 	TagLabel,
 	HStack,
-	Box
+	Box,
+	List,
+	Avatar
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import placeholder from '../assets/placeholder.png';
 import { PokemonContext } from '../context/PokemonContext';
 import { darkColors, colors, themeColors, lightColors } from '../colors/TypeColors';
-import { motion } from 'framer-motion';
+import { motion, useViewportScroll } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import NewEvolutionChain from '../components/NewEvolutionChain';
+import { typeIcons } from '../assets/types/TypeArray';
+import DamageRelation from '../components/DamageRelation';
 
 const PokeDetailsPage = (props) => {
 	const { pokemonName, cGetPokemonName } = useContext(PokemonContext);
@@ -35,6 +39,7 @@ const PokeDetailsPage = (props) => {
 	const [ isLoading, setLoading ] = useState(true);
 	const [ typeColor, setTypeColor ] = useState(theme.colors.current);
 	const [ typeGradient, setTypeGradient ] = useState('');
+	const { scrollYProgress } = useViewportScroll();
 
 	const MotionFlex = motion.custom(Flex);
 	const MotionTag = motion.custom(Tag);
@@ -51,6 +56,10 @@ const PokeDetailsPage = (props) => {
 		baseExperience: ''
 	});
 
+	const capitalize = (s) => {
+		return s.charAt(0).toUpperCase() + s.slice(1);
+	};
+
 	const [ pokeSpeciesDetails, setPokeSpeciesDetails ] = useState({
 		baseHappiness: '',
 		captureRate: '',
@@ -58,6 +67,7 @@ const PokeDetailsPage = (props) => {
 		eggGroups: [],
 		evoultionChainURL: '',
 		evolvesFrom: '',
+		habitat: '',
 		pokemonGenus: '',
 		growthRate: '',
 		generation: '',
@@ -113,7 +123,8 @@ const PokeDetailsPage = (props) => {
 								growthRate: result.growth_rate.name,
 								generation: result.generation.name,
 								varieties: result.varieties,
-								flavorText: result.flavor_text_entries[5].flavor_text
+								flavorText: result.flavor_text_entries[0].flavor_text,
+								habitat: result.habitat ? result.habitat.name : 'NA'
 							};
 							setPokeSpeciesDetails(newPokeSpecies);
 						})
@@ -125,11 +136,12 @@ const PokeDetailsPage = (props) => {
 					console.error('There has been a problem with your fetch operation:', error);
 				});
 		},
-		[ currentColors , pokemonName ]
+		[ currentColors, pokemonName ]
 	);
 
 	return (
 		<Flex
+			maxW={[ '100vw', 'xl', 'xl', 'xl' ]}
 			w={[ '100vw', 'xl', 'xl', 'xl' ]}
 			borderColor={typeColor}
 			borderWidth={2}
@@ -161,7 +173,7 @@ const PokeDetailsPage = (props) => {
 								size="lg"
 								shadow="md"
 							>
-								<TagLabel>{size.type.name}</TagLabel>
+								<TagLabel>{capitalize(size.type.name)}</TagLabel>
 							</MotionTag>
 						</Link>
 					))}
@@ -257,15 +269,10 @@ const PokeDetailsPage = (props) => {
 				)}
 			</Container>
 			<Box textAlign="center" p={3}>
-				<Text size="sm" fontStyle="italic" m={2} textAlign="center">
+				<Text fontSize="sm" fontStyle="italic" p={2} textAlign="justified" noOfLines={4}>
 					{pokeSpeciesDetails.flavorText}
 				</Text>
 			</Box>
-			{/* <Divider m={2} />
-
-			<Heading>Profile</Heading>
-
-			<Divider m={2} /> */}
 
 			{isLoading ? (
 				<Spinner />
@@ -302,11 +309,63 @@ const PokeDetailsPage = (props) => {
 							</Stat>
 						</SimpleGrid>
 					</Container>
+					<br />
+					<Container display="flex" flexDir="row" justifyContent="center">
+						<Link>
+							<MotionTag
+								whileHover={{ scale: 1.1 }}
+								colorScheme={themeColors[pokemon.types[0].type.name]}
+							>
+								<TagLabel>{pokeSpeciesDetails.generation.toUpperCase()}</TagLabel>
+							</MotionTag>
+						</Link>
+					</Container>
+					<br />
 					<Divider m={3} />
+
 					<Heading size="md" textAlign="center" fontWeight="none" mb={4}>
 						Evolution Chain
 					</Heading>
 					<NewEvolutionChain url={pokeSpeciesDetails.evoultionChainURL} />
+
+					<Divider mt={3} mb={3} />
+
+					<Container display="flex" flexDir="row" align="center" justify="center">
+						<Text fontWeight="bold">Egg groups : </Text>
+						<List flexDir="row" letterSpacing={2}>
+							{pokeSpeciesDetails.eggGroups.map((group) => {
+								return (
+									<Link>
+										<MotionTag marginInline={2} whileHover={{ scale: 1.1 }}>
+											<TagLabel>
+												{' '}
+												{group.name.charAt(0).toUpperCase() + group.name.slice(1)}
+											</TagLabel>
+										</MotionTag>
+									</Link>
+								);
+							})}
+						</List>
+					</Container>
+					<br />
+					<Container display="flex" flexDir="row" align="center" justify="center">
+						<Text fontWeight="bold">Habitat : </Text>
+						<Text marginInline={2}>{capitalize(pokeSpeciesDetails.habitat)}</Text>
+					</Container>
+					<br />
+					<Container display="flex" flexDir="row" align="center" justify="center">
+						<Text fontWeight="bold">Growth Rate : </Text>
+						<Text marginInline={2}>{capitalize(pokeSpeciesDetails.growthRate)}</Text>
+					</Container>
+					<br />
+					<Divider m={3} />
+
+					<Container display="flex" flexDirection="column">
+						<Heading size="md" textAlign="center" fontWeight="none" mb={4}>
+							Damage Relations
+						</Heading>
+						<DamageRelation type={pokemon.types} />
+					</Container>
 				</Container>
 			)}
 		</Flex>
