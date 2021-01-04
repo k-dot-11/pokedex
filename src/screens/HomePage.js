@@ -161,6 +161,7 @@ const HomePage = () => {
 					colorScheme="red"
 					aria-label="Search database"
 					icon={<FaSearch />}
+					isLoading = {isLoading}
 					flex="1"
 					ml="10px"
 					isRound

@@ -5,11 +5,11 @@ import placeholder from '../assets/placeholder.png';
 import { PokemonContext } from '../context/PokemonContext';
 
 const NewEvolutionChain = (props) => {
-	const [ isLoading, setIsLoading ] = useState(true);
 	const [ spriteArray, setSpriteArray ] = useState([]);
 	const [ evolArray, setEvolArray ] = useState([]);
-	const { pokemonName, cSetPokemonName } = useContext(PokemonContext);
+	const { cSetPokemonName } = useContext(PokemonContext);
 	const [ evolutionExists, setEvolutionExists ] = useState(true);
+	const [ loading, setLoading ] = useState(true);
 
 	function addToSprite(pokemon, i) {
 		return new Promise((resolve, reject) => {
@@ -19,15 +19,14 @@ const NewEvolutionChain = (props) => {
 						...spriteArray,
 						result.sprites.other['official-artwork'].front_default
 					]);
+					resolve(i + 1);
 				});
-				resolve(i + 1);
-			}, 100);
+			}, 10);
 		});
 	}
 
 	async function generateSpriteArray(evolNames, i) {
 		if (i == evolNames.length) {
-			setIsLoading(false);
 			return;
 		}
 		let x = await addToSprite(evolNames[i], i);
@@ -52,6 +51,9 @@ const NewEvolutionChain = (props) => {
 			})
 			.then(() => {
 				generateSpriteArray(evolNames, 0);
+			})
+			.then(() => {
+				setLoading(false);
 			});
 	}
 
@@ -63,12 +65,9 @@ const NewEvolutionChain = (props) => {
 				No evolution chain for this pokemon
 			</Heading>
 		);
-	if (isLoading)
-		return (
-			<Container display="flex" align="center" justifyContent="center">
-				<Spinner />
-			</Container>
-		);
+
+	if (loading) return <Spinner />;
+
 	return (
 		<Container display="flex" justifyContent="space-around">
 			{spriteArray.map((pokemon, index) => (
