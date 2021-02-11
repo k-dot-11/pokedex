@@ -4,13 +4,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import placeholder from '../assets/placeholder.png';
 import { PokemonContext } from '../context/PokemonContext';
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbSeparator,
-  } from "@chakra-ui/react"
-  import {MdArrowForward, MdChevronRight} from 'react-icons/md'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from '@chakra-ui/react';
+import { MdArrowForward, MdChevronRight } from 'react-icons/md';
 
 const NewEvolutionChain = (props) => {
 	const [ spriteArray, setSpriteArray ] = useState([]);
@@ -19,7 +14,7 @@ const NewEvolutionChain = (props) => {
 	const [ evolutionExists, setEvolutionExists ] = useState(true);
 	const [ loading, setLoading ] = useState(true);
 
-	const MotionImage = motion.custom(Image)
+	const MotionImage = motion.custom(Image);
 
 	function addToSprite(pokemon, i) {
 		return new Promise((resolve, reject) => {
@@ -79,34 +74,29 @@ const NewEvolutionChain = (props) => {
 	if (loading) return <Spinner />;
 
 	return (
-		<Container display="flex" justifyContent="space-around">
-			<Breadcrumb separator={<MdArrowForward />}>
-			{spriteArray.map((pokemon, index) => (
-				<BreadcrumbItem>
-				<Flex
-					flexDirection="column"
-					align="center"
-					p={2}
-					onClick={() => {
-						cSetPokemonName(evolArray[index]);
-					}}
-				>
-					<Link>
-						<MotionImage
-							alignSelf="center"
-							fallbackSrc={placeholder}
-							boxSize={[ '70px', '75px', '100px', '100px' ]}
-							src={pokemon}
-							whileHover={{scale:1.1}}
-						/>
-						<Heading size="xs" mt={2} textAlign="center">
-							{/* {evolArray[index].charAt(0).toUpperCase() + evolArray[index].slice(1)} */}
-							{evolArray[index].charAt(0).toUpperCase() + evolArray[index].slice(1)}
-						</Heading>
-					</Link>
-				</Flex>
-				</BreadcrumbItem>
-			))}
+		<Container display="flex" justifyContent="space-evenly">
+			<Breadcrumb separator={<MdChevronRight />} orientation="horizontal">
+				{spriteArray.map((pokemon, index) => (
+					<BreadcrumbItem
+						onClick={() => {
+							cSetPokemonName(evolArray[index]);
+						}}
+					>
+						<Link>
+							<MotionImage
+								alignSelf="center"
+								fallbackSrc={placeholder}
+								boxSize={[ '70px', '75px', '100px', '100px' ]}
+								src={pokemon}
+								whileHover={{ scale: 1.1 }}
+							/>
+							<Heading size="xs" mt={2} textAlign="center">
+								{/* {evolArray[index].charAt(0).toUpperCase() + evolArray[index].slice(1)} */}
+								{evolArray[index].charAt(0).toUpperCase() + evolArray[index].slice(1)}
+							</Heading>
+						</Link>
+					</BreadcrumbItem>
+				))}
 			</Breadcrumb>
 		</Container>
 	);

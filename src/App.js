@@ -33,12 +33,14 @@ import {
 import logo from './assets/navi.jpg';
 import { FaGithub, FaGithubSquare, FaLinkedin, FaOptinMonster, FaRedditSquare } from 'react-icons/fa';
 import PokemonContextProvider from './context/PokemonContext';
+import ListOfAllPokemons from './screens/ListOfAllPokemons';
 
 function App() {
 	const [ show, toggleShow ] = useState(false);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const MotionHeading = motion.custom(Heading);
+	const MotionFlex = motion.custom(Flex);
 
 	return (
 		<ChakraProvider theme={theme}>
@@ -93,12 +95,13 @@ function App() {
 						>
 							<Flex align="center" justifyContent="space-between" w="100vw" p={3}>
 								<Link to="/home" _hover="none">
-									<Flex align="center">
-										<MotionHeading whileHover={{ rotate: [ 0, -5, 5, -5, 0 ], opacity: 0.5 }}>
+									<MotionFlex whileHover={{ rotate: [ 0, -5, 5, -5, 0 ], opacity: 0.5 }} align="center">
 											<Avatar src={logo} marginInline={2} />
+
+										<MotionHeading >
 											Pokedoxx
 										</MotionHeading>
-									</Flex>
+									</MotionFlex>
 								</Link>
 								<Flex align="center">
 									<ColorModeSwitcher />
@@ -134,7 +137,7 @@ function App() {
 								<HomePage />
 							</Route>
 							<Route path="/listofall">
-								<HomePage />
+								<ListOfAllPokemons />
 							</Route>
 							<Route path="/pokedetails">
 								<PokeDetailsPage />

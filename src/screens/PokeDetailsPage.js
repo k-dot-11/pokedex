@@ -364,7 +364,7 @@ const PokeDetailsPage = (props) => {
 						<Heading size="md" textAlign="center" fontWeight="none" mb={4}>
 							Damage Relations
 						</Heading>
-						<DamageRelation type={pokemon.types} />
+						<DamageRelation types={pokemon.types} />
 					</Container>
 				</Container>
 			)}
