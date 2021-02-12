@@ -29,6 +29,7 @@ const ListOfAllPokemons = () => {
 
 	useEffect(() => {
 		window.addEventListener('scroll', handleScroll);
+		window.addEventListener('touchmove', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
 
@@ -50,7 +51,7 @@ const ListOfAllPokemons = () => {
 					setOffset(offset + 40);
 					setIsFetching(false);
 				});
-		}, 1000);
+		}, 200);
 	};
 
 	return (
