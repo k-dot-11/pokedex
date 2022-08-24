@@ -108,7 +108,7 @@ const HomePage = () => {
 			<br/>
 			<Image
 				blockSize={[ '200px', '300px', '300px', '300px' ]}
-				src="https://imgur.com/a/T0wUdDW"
+				src="https://www.pngkey.com/png/full/222-2222875_pokedex-icon.png"
 			/>
 			<Modal isCentered isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
